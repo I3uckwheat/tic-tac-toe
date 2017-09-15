@@ -62,7 +62,6 @@ end
 
 def scrub_number(input)
   until input.is_a?(Numeric) && input.between?(1, 9)
-    puts input.inspect
     puts 'Ender a valid number between 1 and 9'
     input = gets.chomp.to_i
   end
