@@ -1,8 +1,12 @@
 # Sets up the play field
 class Game
-  def initialize(name1, name2)
-    @players = {player1: [name1, "x"], player2: [name2, "o"] }
+  def initialize(name1 = 'Player 1', name2 = 'Player 2')
+    @players = {
+      player1: { name: name1, sign: 'x' },
+      player2: { name: name2, sign: 'o' }
+    }
     @board = Board.new
+    @turn = 0
   end
 
   def show_board
@@ -10,8 +14,18 @@ class Game
   end
 
   def place(location)
-    sign = "x"
-    @board.place_piece(location, sign)
+    @board.place_piece(location, which_players_turn[:sign])
+    next_turn
+  end
+
+  private
+
+  def next_turn
+    @turn += 1
+  end
+
+  def which_players_turn
+    @turn.even? ? @players[:player1] : @players[:player2]
   end
 
   # Creates Board
@@ -31,7 +45,8 @@ class Game
     end
 
     def place_piece(location, sign)
-      puts location, sign
+      @locations[location] = sign
+      display_board
     end
   end
 end
