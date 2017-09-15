@@ -9,6 +9,10 @@ class Game
     @turn = 0
   end
 
+  def show_names
+    puts @players
+  end
+
   def show_board
     @board.display_board
   end
@@ -33,6 +37,7 @@ class Game
     def initialize
       @locations = []
       @locations = (0...9).map { |x| @locations[x] = x }
+      display_board
     end
 
     def display_board
@@ -49,4 +54,29 @@ class Game
       display_board
     end
   end
+end
+
+def scrub_name(input, player)
+  input.empty? ? "Player#{player}" : input
+end
+
+def scrub_number(input)
+  until input.is_a?(Numeric) && input.between?(1, 9)
+    puts input.inspect
+    puts 'Ender a valid number between 1 and 9'
+    input = gets.chomp.to_i
+  end
+  input
+end
+
+puts 'Tic-tac-toe, get three in a row!'
+puts "Enter Player1's name: "
+player1 = scrub_name(gets.chomp, 1)
+puts "Enter Player2's name: "
+player2 = scrub_name(gets.chomp, 2)
+puts "\n\n\n"
+
+game = Game.new(player1, player2)
+9.times do
+  game.place(scrub_number(gets.chomp.to_i))
 end
