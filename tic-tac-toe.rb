@@ -18,13 +18,15 @@ class Board
   attr_accessor :locations
   def initialize
     @locations = []
-    @locations = (0...9).map { |x| @locations[x] = x }
+    @locations = (0...9).map { |x| @locations[x] = " " }
   end
 
   def display_board
+    count = 0
     @locations.each_slice(3) do |x, y, z|
-      printf "   #{x} | #{y} | #{z}\n"
-      #puts "----------------"
+      printf "  #{x} | #{y} | #{z}\n"
+      puts " -----------" if count < 2
+      count += 1
     end
   end
 end
