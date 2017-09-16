@@ -19,6 +19,7 @@ class Game
 
   def place(location)
     @board.place_piece(location, which_players_turn[:sign])
+    win?
     next_turn
   end
 
@@ -32,11 +33,15 @@ class Game
     @turn.even? ? @players[:player1] : @players[:player2]
   end
 
+  def win?
+    @board.three_in_a_row
+  end
+
   # Creates Board
   class Board
     def initialize
       @locations = []
-      @locations = (0...9).map { |x| @locations[x] = x }
+      @locations = (1..9).map { |x| @locations[x] = x }
       display_board
     end
 
@@ -50,8 +55,27 @@ class Game
     end
 
     def place_piece(location, sign)
-      @locations[location] = sign
+      @locations[location - 1] = sign
       display_board
+    end
+
+    def win_conditions
+      [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7]
+      ]
+    end
+
+    def three_in_a_row
+      win_conditions.each do |array|
+        true if @locations.value_at(*win_conditions)
+      end
     end
   end
 end
