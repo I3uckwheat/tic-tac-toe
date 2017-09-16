@@ -19,7 +19,7 @@ class Game
 
   def place(location)
     @board.place_piece(location, which_players_turn[:sign])
-    win?
+    puts "WINNER, WINNER #{which_players_turn[:name]}!" if win?
     next_turn
   end
 
@@ -40,8 +40,17 @@ class Game
   # Creates Board
   class Board
     def initialize
-      @locations = []
-      @locations = (1..9).map { |x| @locations[x] = x }
+      @locations = (1..9).to_a
+      @win_conditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ]
       display_board
     end
 
@@ -59,22 +68,9 @@ class Game
       display_board
     end
 
-    def win_conditions
-      [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [1, 4, 7],
-        [2, 5, 8],
-        [3, 6, 9],
-        [1, 5, 9],
-        [3, 5, 7]
-      ]
-    end
-
     def three_in_a_row
-      win_conditions.each do |array|
-        true if @locations.value_at(*win_conditions)
+      @win_conditions.each do |line|
+        return true if /\D{3}/.match?(@locations.values_at(*line).join)
       end
     end
   end
