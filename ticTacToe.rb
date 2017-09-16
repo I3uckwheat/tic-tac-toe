@@ -19,11 +19,14 @@ class Game
 
   def place(location)
     @board.place_piece(location, which_players_turn[:sign])
-    puts "WINNER, WINNER #{which_players_turn[:name]}!" if win?
-    next_turn
+    win? ? win_condition : next_turn
   end
 
   private
+
+  def win_condition
+    puts "Winner Winner! #{which_players_turn[:name]}!"
+  end
 
   def next_turn
     @turn += 1
@@ -69,10 +72,13 @@ class Game
     end
 
     def three_in_a_row
+      matched = false
       @win_conditions.each do |line|
         if /\D{3}/.match?(@locations.values_at(*line).join)
-        puts @locations.values_at(*line).join
+          puts 'Match'
+          matched = true
         end
+        return matched
       end
     end
   end
