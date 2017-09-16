@@ -70,7 +70,9 @@ class Game
 
     def three_in_a_row
       @win_conditions.each do |line|
-        return true if /\D{3}/.match?(@locations.values_at(*line).join)
+        if /\D{3}/.match?(@locations.values_at(*line).join)
+        puts @locations.values_at(*line).join
+        end
       end
     end
   end
