@@ -1,5 +1,6 @@
 # Sets up the play field
 class Game
+  require './board.rb'
   def initialize(name1 = 'Player 1', name2 = 'Player 2')
     @players = {
       player1: { name: name1, sign: 'x' },
@@ -50,8 +51,6 @@ class Game
     @turn.even? ? @players[:player1] : @players[:player2]
   end
 
-  # Creates Board
-  require './board.rb'
 end
 
 def scrub_name(input, player)
