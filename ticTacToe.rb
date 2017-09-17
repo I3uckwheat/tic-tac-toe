@@ -22,6 +22,10 @@ class Game
     win? ? win_condition : next_turn
   end
 
+  def win?
+    @board.three_in_a_row
+  end
+
   private
 
   def win_condition
@@ -34,10 +38,6 @@ class Game
 
   def which_players_turn
     @turn.even? ? @players[:player1] : @players[:player2]
-  end
-
-  def win?
-    @board.three_in_a_row
   end
 
   # Creates Board
@@ -74,10 +74,7 @@ class Game
     def three_in_a_row
       matched = false
       @win_conditions.each do |line|
-        if /\D{3}/.match?(@locations.values_at(*line).join)
-          puts 'Match'
-          matched = true
-        end
+        matched = true if /\D{3}/.match?(@locations.values_at(*line).join)
         return matched
       end
     end
@@ -106,4 +103,5 @@ puts "\n\n\n"
 game = Game.new(player1, player2)
 9.times do
   game.place(scrub_number(gets.chomp.to_i))
+  break if game.win?
 end
