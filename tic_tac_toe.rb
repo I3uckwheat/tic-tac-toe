@@ -98,6 +98,10 @@ def valid_number?(input)
   input.between?(1, 9)
 end
 
+def draw
+  puts "It's a draw!"
+end
+
 puts 'Tic-tac-toe, get three in a row!'
 puts "Enter Player1's name: "
 player1 = scrub_name(gets.chomp, 1)
@@ -107,7 +111,9 @@ puts "\n\n\n"
 
 game = Game.new(player1, player2)
 
-9.times do
+
+9.times do |n|
+  puts "THIS IS #{n} LOOP"
   game.show_board
   input = gets.chomp.to_i
   until valid_number?(input) && game.empty_place?(input)
@@ -121,4 +127,7 @@ game = Game.new(player1, player2)
   end
   game.place(input)
   break if game.win?
+  draw if n == 8
 end
+game.show_board
+
