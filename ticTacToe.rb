@@ -6,6 +6,7 @@ class Game
       player2: { name: name2, sign: 'o' }
     }
     @board = Board.new
+    @occupied_slots = []
     @turn = 0
   end
 
@@ -20,6 +21,11 @@ class Game
   def place(location)
     @board.place_piece(location, which_players_turn[:sign])
     win? ? win_condition : next_turn
+    placed_numbers(location)
+  end
+
+  def empty_place?(input)
+    !@occupied_slots.include?(input)
   end
 
   def win?
@@ -27,6 +33,10 @@ class Game
   end
 
   private
+
+  def placed_numbers(location)
+    @occupied_slots.push(location)
+  end
 
   def win_condition
     puts "Winner Winner! #{which_players_turn[:name]}!"
@@ -54,7 +64,6 @@ class Game
         [0, 4, 8],
         [2, 4, 6]
       ]
-      display_board
     end
 
     def display_board
@@ -68,15 +77,15 @@ class Game
 
     def place_piece(location, sign)
       @locations[location - 1] = sign
-      display_board
     end
 
     def three_in_a_row
       matched = false
       @win_conditions.each do |line|
-        matched = true if /\D{3}/.match?(@locations.values_at(*line).join)
-        return matched
+        matched = true if /ooo|xxx/.match?(@locations.values_at(*line).join)
+        break if matched
       end
+      matched
     end
   end
 end
@@ -85,12 +94,8 @@ def scrub_name(input, player)
   input.empty? ? "Player#{player}" : input
 end
 
-def scrub_number(input)
-  until input.is_a?(Numeric) && input.between?(1, 9)
-    puts 'Ender a valid number between 1 and 9'
-    input = gets.chomp.to_i
-  end
-  input
+def valid_number?(input)
+  input.between?(1, 9)
 end
 
 puts 'Tic-tac-toe, get three in a row!'
@@ -101,7 +106,19 @@ player2 = scrub_name(gets.chomp, 2)
 puts "\n\n\n"
 
 game = Game.new(player1, player2)
+
 9.times do
-  game.place(scrub_number(gets.chomp.to_i))
+  game.show_board
+  input = gets.chomp.to_i
+  until valid_number?(input) && game.empty_place?(input)
+    if valid_number?(input)
+      puts 'Enter a number on the board'
+    elsif game.empty_place?(input)
+      puts 'Enter a valid number'
+    end
+    game.show_board
+    input = gets.chomp.to_i
+  end
+  game.place(input)
   break if game.win?
 end
