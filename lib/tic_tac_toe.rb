@@ -1,6 +1,6 @@
 # Sets up the play field
 class Game
-  require './board.rb'
+  require 'board.rb'
   def initialize(name1 = 'Player 1', name2 = 'Player 2')
     @players = {
       player1: { name: name1, sign: 'x' },
@@ -9,10 +9,6 @@ class Game
     @board = Board.new
     @occupied_slots = []
     @turn = 0
-  end
-
-  def show_names
-    puts @players
   end
 
   def show_board
@@ -50,7 +46,6 @@ class Game
   def which_players_turn
     @turn.even? ? @players[:player1] : @players[:player2]
   end
-
 end
 
 def scrub_name(input, player)
@@ -65,29 +60,29 @@ def draw
   puts "It's a draw!"
 end
 
-puts 'Tic-tac-toe, get three in a row!'
-puts "Enter Player1's name: "
-player1 = scrub_name(gets.chomp, 1)
-puts "Enter Player2's name: "
-player2 = scrub_name(gets.chomp, 2)
-puts "\n\n\n"
+# puts 'Tic-tac-toe, get three in a row!'
+# puts "Enter Player1's name: "
+# player1 = scrub_name(gets.chomp, 1)
+# puts "Enter Player2's name: "
+# player2 = scrub_name(gets.chomp, 2)
+# puts "\n\n\n"
 
-game = Game.new(player1, player2)
+# game = Game.new(player1, player2)
 
-9.times do |n|
-  game.show_board
-  input = gets.chomp.to_i
-  until valid_number?(input) && game.empty_place?(input)
-    if valid_number?(input)
-      puts 'Enter a number on the board'
-    elsif game.empty_place?(input)
-      puts 'Enter a valid number'
-    end
-    game.show_board
-    input = gets.chomp.to_i
-  end
-  game.place(input)
-  break if game.win?
-  draw if n == 8
-end
-game.show_board
+# 9.times do |n|
+#   game.show_board
+#   input = gets.chomp.to_i
+#   until valid_number?(input) && game.empty_place?(input)
+#     if valid_number?(input)
+#       puts 'Enter a number on the board'
+#     elsif game.empty_place?(input)
+#       puts 'Enter a valid number'
+#     end
+#     game.show_board
+#     input = gets.chomp.to_i
+#   end
+#   game.place(input)
+#   break if game.win?
+#   draw if n == 8
+# end
+# game.show_board
